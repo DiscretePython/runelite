@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
- * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
+ * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,42 +24,25 @@
  */
 package net.runelite.client.plugins.metronome;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import net.runelite.api.SoundEffectVolume;
 
-@ConfigGroup("metronome")
-public interface MetronomePluginConfiguration extends Config
+@Getter
+public enum MetronomeVolume
 {
-	@ConfigItem(
-		keyName = "tickCount",
-		name = "Tick count",
-		description = "Configures the tick on which a sound will be played",
-		position = 2
-	)
-	default int tickCount()
-	{
-		return 1;
-	}
+	LOW("Low", SoundEffectVolume.LOW),
+	MED_LOW("Medium Low", SoundEffectVolume.MEDIUM_LOW),
+	MED_HIGH("Medium High", SoundEffectVolume.MEDIUM_HIGH),
+	HIGH("High", SoundEffectVolume.HIGH),
+	HIGHER("Higher", (int) (SoundEffectVolume.HIGH * 1.5)),
+	HIGHEST("Highest", SoundEffectVolume.HIGH * 2);
 
-	@ConfigItem(
-		keyName = "enableTock",
-		name = "Enable tock (alternating) sound",
-		description = "Toggles whether to play two alternating sounds",
-		position = 3
-	)
-	default boolean enableTock()
-	{
-		return false;
-	}
+	private final String name;
+	private final int volume;
 
-	@ConfigItem(
-			keyName = "volume",
-			name = "Volume",
-			description = "Select volume level"
-	)
-	default MetronomeVolume selectedVolume()
+	MetronomeVolume(String name, int volume)
 	{
-		return MetronomeVolume.MED_HIGH;
+		this.name = name;
+		this.volume = volume;
 	}
 }

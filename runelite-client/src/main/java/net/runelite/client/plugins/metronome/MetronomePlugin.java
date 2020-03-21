@@ -27,12 +27,12 @@ package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.SoundEffectVolume;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -52,11 +52,18 @@ public class MetronomePlugin extends Plugin
 
 	private int tickCounter = 0;
 	private boolean shouldTock = false;
+	private int volume;
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MetronomePluginConfiguration.class);
+	}
+
+	@Override
+	protected void startUp()
+	{
+		volume = config.selectedVolume().getVolume();
 	}
 
 	@Subscribe
@@ -71,13 +78,22 @@ public class MetronomePlugin extends Plugin
 		{
 			if (config.enableTock() && shouldTock)
 			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
+				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, volume);
 			}
 			else
 			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
+				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, volume);
 			}
 			shouldTock = !shouldTock;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("metronome") && event.getKey().equals("volume"))
+		{
+			volume = config.selectedVolume().getVolume();
 		}
 	}
 }
