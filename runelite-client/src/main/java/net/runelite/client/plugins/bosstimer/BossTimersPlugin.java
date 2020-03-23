@@ -161,8 +161,9 @@ public class BossTimersPlugin extends Plugin
 
 				if (respawnTimer.getWorld() != getCurrentWorld())
 				{
-					sb.append("</br>World ").append(respawnTimer.getWorld()).append(" ").append(respawnTimer.getText());
-				} else
+					sb.append("</br>World ").append(respawnTimer.getWorld());
+				}
+				else
 				{
 					worldTimer = respawnTimer;
 				}
@@ -179,7 +180,8 @@ public class BossTimersPlugin extends Plugin
 				worldTimer.setTooltip(sb.toString());
 				worldTimer.setShowTimer(true);
 				infoBoxManager.addInfoBox(worldTimer);
-			} else if (longestTimer != null)
+			}
+			else if (longestTimer != null)
 			{
 				longestTimer.setTooltip(sb.toString());
 				longestTimer.setShowTimer(false);

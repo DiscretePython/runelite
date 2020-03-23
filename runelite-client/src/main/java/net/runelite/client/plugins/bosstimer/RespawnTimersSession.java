@@ -28,7 +28,6 @@ package net.runelite.client.plugins.bosstimer;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,9 +46,7 @@ class RespawnTimersSession
 	void addBossTimer(RespawnTimer respawnTimer)
 	{
 		timersMap.computeIfAbsent(respawnTimer.getBossName(), k -> new ArrayList<>());
-
-		ArrayList<RespawnTimer> timers = timersMap.get(respawnTimer.getBossName());
-		timers.add(respawnTimer);
+		timersMap.get(respawnTimer.getBossName()).add(respawnTimer);
 	}
 
 	void cull()
